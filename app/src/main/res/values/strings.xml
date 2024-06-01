@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">AttendaceManagementSystemWonderpets</string>
+    <string name="appName">CheckMate</string>
+    <string name="stay_on_track_stay_on_top">Stay on Track, Stay on Top.</string>
+    <string name="appTag">Stay on Track, Stay on Top.</string>
+    <string name="pwordHint">Password</string>
+    <string name="emailHint">Email</string>
+</resources>
