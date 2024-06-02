@@ -1,7 +1,8 @@
 package com.example.attendacemanagementsystemwonderpets;
 
-import android.content.Context;
 import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -92,5 +93,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         long result = db.insert(TABLE_PROFILE, null, values);
         return result != -1; // return true if insert is successful
+    }
+
+    // Method to check student login
+    public boolean checkStudentLogin(String email, String password) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_STUDENTS,
+                new String[]{COLUMN_ID},
+                COLUMN_EMAIL + "=? AND " + COLUMN_PASSWORD + "=?",
+                new String[]{email, password},
+                null, null, null);
+
+        boolean loginSuccess = cursor.moveToFirst();
+        cursor.close();
+        return loginSuccess;
+    }
+
+    // Method to check teacher login
+    public boolean checkTeacherLogin(String email, String password) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_TEACHERS,
+                new String[]{COLUMN_ID},
+                COLUMN_EMAIL + "=? AND " + COLUMN_PASSWORD + "=?",
+                new String[]{email, password},
+                null, null, null);
+
+        boolean loginSuccess = cursor.moveToFirst();
+        cursor.close();
+        return loginSuccess;
     }
 }

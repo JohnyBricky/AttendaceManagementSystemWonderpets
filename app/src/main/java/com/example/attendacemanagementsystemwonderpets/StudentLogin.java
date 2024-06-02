@@ -1,6 +1,7 @@
 package com.example.attendacemanagementsystemwonderpets;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -37,7 +38,9 @@ public class StudentLogin extends AppCompatActivity {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signUpStudent();
+                // Start the SignUpActivity
+                Intent intent = new Intent(StudentLogin.this, SignUpActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -58,23 +61,6 @@ public class StudentLogin extends AppCompatActivity {
             cursor.close();
         } else {
             Toast.makeText(this, "Invalid email or password", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void signUpStudent() {
-        String email = txtLogStudUser.getText().toString();
-        String password = txtLogStudPass.getText().toString();
-
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.COLUMN_EMAIL, email);
-        values.put(DatabaseHelper.COLUMN_PASSWORD, password);
-
-        long newRowId = db.insert(DatabaseHelper.TABLE_STUDENTS, null, values);
-        if (newRowId != -1) {
-            Toast.makeText(this, "Sign up successful", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Sign up failed", Toast.LENGTH_SHORT).show();
         }
     }
 }

@@ -32,7 +32,7 @@
             android:name=".HomeStud"
             android:exported="false" />
         <activity
-            android:name=".signUpPage"
+            android:name=".SignUpActivity"
             android:exported="false" />
         <activity
             android:name=".TeacherLogin"
