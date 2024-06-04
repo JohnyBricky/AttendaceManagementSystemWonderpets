@@ -59,6 +59,8 @@ public class StudentLogin extends AppCompatActivity {
         if (cursor != null && cursor.moveToFirst()) {
             Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
             cursor.close();
+            Intent intent = new Intent(StudentLogin.this, HomeStud.class);
+            startActivity(intent);
         } else {
             Toast.makeText(this, "Invalid email or password", Toast.LENGTH_SHORT).show();
         }

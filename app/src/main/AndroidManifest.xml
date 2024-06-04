@@ -26,7 +26,7 @@
             android:name=".AttendanceCapture"
             android:exported="false" />
         <activity
-            android:name=".StudProfile"
+            android:name=".StudProfileActivity"
             android:exported="false" />
         <activity
             android:name=".HomeStud"

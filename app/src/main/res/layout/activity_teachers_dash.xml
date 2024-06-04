@@ -8,32 +8,42 @@
     tools:context=".TeachersDash">
 
     <ListView
-        android:layout_width="335dp"
-        android:layout_height="547dp"
-        tools:layout_editor_absoluteX="38dp"
-        tools:layout_editor_absoluteY="122dp" />
+        android:id="@+id/listView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="38dp"
+        android:layout_marginTop="67dp"
+        android:layout_marginEnd="38dp"
+        android:layout_marginBottom="62dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btnAddClass" />
 
     <TextClock
         android:id="@+id/textClock2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="38dp"
-        tools:layout_editor_absoluteY="103dp" />
+        app:layout_constraintStart_toStartOf="@+id/listView"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <TextView
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="19dp"
         android:text="WELCOME, $TEACH"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="84dp" />
+        app:layout_constraintBottom_toTopOf="@+id/listView"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/button7"
+        android:id="@+id/btnAddClass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
-        tools:layout_editor_absoluteX="279dp"
-        tools:layout_editor_absoluteY="56dp" />
+        android:layout_marginTop="55dp"
+        android:text="ADD CLASS"
+        app:layout_constraintEnd_toEndOf="@+id/listView"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
