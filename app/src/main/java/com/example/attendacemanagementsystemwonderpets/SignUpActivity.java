@@ -70,6 +70,11 @@ public class SignUpActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish(); // Finish the current activity to remove it from the back stack
             }
+            if (isTeacher) {
+                Intent intent = new Intent(SignUpActivity.this, teachProfile.class);
+                startActivity(intent);
+                finish(); // Finish the current activity to remove it from the back stack
+            }
         } else {
             Toast.makeText(this, "Registration failed", Toast.LENGTH_SHORT).show();
         }
