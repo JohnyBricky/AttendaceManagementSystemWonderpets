@@ -57,6 +57,12 @@ public class SignUpActivity extends AppCompatActivity {
 
         // Determine the table based on user type
         String table = isStudent ? DatabaseHelper.TABLE_STUDENTS : DatabaseHelper.TABLE_TEACHERS;
+        if (chkStudent is_Checked){
+            Intent intent = new Intent(SignUpActivity.this, StudProfileActivity.class);
+        } else if (chkTeacher is_Checked)
+        {
+            //Intent intent = new Intent(SignUpActivity.this, TeachProfileActivity.class);
+        }
 
         // Insert user in database
         boolean insertSuccess = dbHelper.addUser(email, password, table);
