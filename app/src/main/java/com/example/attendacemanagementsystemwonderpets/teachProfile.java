@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,12 +13,11 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 public class teachProfile extends AppCompatActivity {
 
     private static final int REQUEST_GALLERY = 1;
+    private static final String TAG = "teachProfile";
 
     private EditText txtWriteTeachName, txtWriteTeachNum;
     private Button btnSubmitProfile, btnSelectImage;
@@ -70,6 +70,8 @@ public class teachProfile extends AppCompatActivity {
         String teacherID = txtWriteTeachNum.getText().toString();
         String name = txtWriteTeachName.getText().toString();
 
+        Log.d(TAG, "Submitting Profile: TeacherID = " + teacherID + ", Name = " + name);
+
         if (teacherID.isEmpty() || name.isEmpty()) {
             Toast.makeText(this, "Please fill all fields", Toast.LENGTH_LONG).show();
             return;
@@ -78,8 +80,10 @@ public class teachProfile extends AppCompatActivity {
         boolean isInserted = dbHelper.addTeacherProfile(teacherID, name);
         if (isInserted) {
             Toast.makeText(this, "Profile Submitted Successfully", Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "Profile Submitted Successfully");
         } else {
             Toast.makeText(this, "Failed to Submit Profile", Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "Failed to Submit Profile");
         }
     }
 }
