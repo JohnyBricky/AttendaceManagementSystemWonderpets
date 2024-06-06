@@ -95,6 +95,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result != -1; // return true if insert is successful
     }
 
+    public boolean addTeacherProfile(String teacherID, String name) {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("TEACHER_ID", teacherID);
+            contentValues.put("NAME", name);
+
+            long result = db.insert("teacher_table", null, contentValues);
+            return result != -1;
+        }
+
     // Method to check student login
     public boolean checkStudentLogin(String email, String password) {
         SQLiteDatabase db = this.getReadableDatabase();
