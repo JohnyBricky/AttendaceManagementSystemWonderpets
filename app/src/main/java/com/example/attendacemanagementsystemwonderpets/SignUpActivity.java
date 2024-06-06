@@ -1,5 +1,6 @@
 package com.example.attendacemanagementsystemwonderpets;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -62,6 +63,13 @@ public class SignUpActivity extends AppCompatActivity {
         boolean insertSuccess = dbHelper.addUser(email, password, table);
         if (insertSuccess) {
             Toast.makeText(this, "Registration successful", Toast.LENGTH_SHORT).show();
+
+            // Navigate to StudProfileActivity if the student checkbox is checked
+            if (isStudent) {
+                Intent intent = new Intent(SignUpActivity.this, StudProfileActivity.class);
+                startActivity(intent);
+                finish(); // Finish the current activity to remove it from the back stack
+            }
         } else {
             Toast.makeText(this, "Registration failed", Toast.LENGTH_SHORT).show();
         }
