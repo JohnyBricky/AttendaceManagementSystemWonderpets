@@ -64,7 +64,7 @@ public class SignUpActivity extends AppCompatActivity {
         if (insertSuccess) {
             Toast.makeText(this, "Registration successful", Toast.LENGTH_SHORT).show();
 
-            // Navigate to StudProfileActivity if the student checkbox is checked
+            // Navigate to Stud ProfileActivity if the student checkbox is checked
             if (isStudent) {
                 Intent intent = new Intent(SignUpActivity.this, StudProfileActivity.class);
                 startActivity(intent);

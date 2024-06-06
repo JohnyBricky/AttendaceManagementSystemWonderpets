@@ -121,7 +121,7 @@ public class StudProfileActivity extends AppCompatActivity {
         }
     }
 
-    private void submitProfile() {
+    private void submitPro  file() {
         String studentNumber = txtWriteStudNum.getText().toString();
         String name = txtWriteStudName.getText().toString();
         String section = txtWriteSection.getText().toString();
