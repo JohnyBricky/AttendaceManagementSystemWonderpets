@@ -37,11 +37,11 @@
         android:id="@+id/btnSubmitProfile"
         android:layout_width="200dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="80dp"
         android:text="SUBMIT"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.526"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
