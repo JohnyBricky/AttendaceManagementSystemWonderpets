@@ -13,30 +13,34 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 
-public class teachProfile extends AppCompatActivity {
+public class ProfileTeacher extends AppCompatActivity {
 
     private static final int REQUEST_GALLERY = 1;
-    private static final String TAG = "teachProfile";
+    private static final String TAG = "ProfileTeacher";
 
     private EditText txtWriteTeachName, txtWriteTeachNum;
-    private Button btnSubmitProfile, btnSelectImage;
+    private Button btnSubmitTeachProfile, btnSelectImage;
     private ImageView imageProfileView;
     private DatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_teach_profile);
+        setContentView(R.layout.activity_profile_teacher);
 
         dbHelper = new DatabaseHelper(this);
         txtWriteTeachName = findViewById(R.id.txtWriteTeachName);
         txtWriteTeachNum = findViewById(R.id.txtWriteTeachNum);
-        btnSubmitProfile = findViewById(R.id.btnSubmitProfile);
+        btnSubmitTeachProfile = findViewById(R.id.btnSubmitTeachProfile);
         btnSelectImage = findViewById(R.id.btnSelectImage);
         imageProfileView = findViewById(R.id.imageProfileView);
 
-        btnSubmitProfile.setOnClickListener(new View.OnClickListener() {
+        btnSubmitTeachProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 submitProfile();
@@ -68,22 +72,19 @@ public class teachProfile extends AppCompatActivity {
 
     private void submitProfile() {
         String teacherID = txtWriteTeachNum.getText().toString();
-        String name = txtWriteTeachName.getText().toString();
+        String teacherName = txtWriteTeachName.getText().toString();
 
-        Log.d(TAG, "Submitting Profile: TeacherID = " + teacherID + ", Name = " + name);
-
-        if (teacherID.isEmpty() || name.isEmpty()) {
+        if (teacherID.isEmpty() || teacherName.isEmpty()) {
             Toast.makeText(this, "Please fill all fields", Toast.LENGTH_LONG).show();
             return;
         }
 
-        boolean isInserted = dbHelper.addTeacherProfile(teacherID, name);
+        boolean isInserted = dbHelper.addTeacherProfile(teacherID, teacherName); // Using the method from DatabaseHelper
+
         if (isInserted) {
             Toast.makeText(this, "Profile Submitted Successfully", Toast.LENGTH_SHORT).show();
-            Log.d(TAG, "Profile Submitted Successfully");
         } else {
             Toast.makeText(this, "Failed to Submit Profile", Toast.LENGTH_SHORT).show();
-            Log.d(TAG, "Failed to Submit Profile");
         }
     }
 }
