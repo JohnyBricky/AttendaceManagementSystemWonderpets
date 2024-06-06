@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class TeacherProfileActivity extends AppCompatActivity {
+public class teachProfile extends AppCompatActivity {
 
     private EditText txtWriteTeachName, txtWriteTeachNum;
     private Button btnSubmitProfile, btnSelectImage;
