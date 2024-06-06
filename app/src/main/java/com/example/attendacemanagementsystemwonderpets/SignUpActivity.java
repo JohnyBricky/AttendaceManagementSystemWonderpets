@@ -68,7 +68,7 @@ public class SignUpActivity extends AppCompatActivity {
             if (isStudent) {
                 Intent intent = new Intent(SignUpActivity.this, StudProfileActivity.class);
                 startActivity(intent);
-                finish(); // Finish the current activity to remove it from the back stack
+                finish( ); // Finish the current activity to remove it from the back stack
             }
             if (isTeacher) {
                 Intent intent = new Intent(SignUpActivity.this, teachProfile.class);
