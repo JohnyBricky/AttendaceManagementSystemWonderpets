@@ -41,7 +41,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_TEACHERS = "CREATE TABLE "
             + TABLE_TEACHERS + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
             + COLUMN_EMAIL + " TEXT,"
-            + COLUMN_PASSWORD + " TEXT" + ")";
+            + COLUMN_PASSWORD + " TEXT"
+            + COLUMN_ID + "TEXT"
+            + COLUMN_NAME + "TEXT"+")";
 
     // Student Profile table create statement
     private static final String CREATE_TABLE_PROFILE = "CREATE TABLE "
@@ -96,14 +98,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public boolean addTeacherProfile(String teacherID, String name) {
-            SQLiteDatabase db = this.getWritableDatabase();
-            ContentValues contentValues = new ContentValues();
-            contentValues.put("TEACHER_ID", teacherID);
-            contentValues.put("NAME", name);
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("TEACHER_ID", teacherID);
+        contentValues.put("NAME", name);
 
-            long result = db.insert("teacher_table", null, contentValues);
-            return result != -1;
-        }
+        long result = db.insert("teacher_table", null, contentValues);
+        return result != -1;
+    }
 
     // Method to check student login
     public boolean checkStudentLogin(String email, String password) {
@@ -133,3 +135,4 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return loginSuccess;
     }
 }
+
