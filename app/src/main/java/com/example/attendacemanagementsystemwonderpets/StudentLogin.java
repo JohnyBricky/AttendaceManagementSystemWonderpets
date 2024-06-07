@@ -1,6 +1,5 @@
 package com.example.attendacemanagementsystemwonderpets;
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -48,11 +47,10 @@ public class StudentLogin extends AppCompatActivity {
     private void loginStudent() {
         String email = txtLogStudUser.getText().toString();
         String password = txtLogStudPass.getText().toString();
-
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.query(DatabaseHelper.TABLE_STUDENTS,
-                new String[]{DatabaseHelper.COLUMN_ID},
-                DatabaseHelper.COLUMN_EMAIL + "=? AND " + DatabaseHelper.COLUMN_PASSWORD + "=?",
+                new String[]{DatabaseHelper.getColumnId()},
+                DatabaseHelper.getColumnEmail() + "=? AND " + DatabaseHelper.getColumnPassword() + "=?",
                 new String[]{email, password},
                 null, null, null);
 
@@ -65,4 +63,6 @@ public class StudentLogin extends AppCompatActivity {
             Toast.makeText(this, "Invalid email or password", Toast.LENGTH_SHORT).show();
         }
     }
+
+
 }

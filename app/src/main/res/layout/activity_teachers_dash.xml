@@ -7,24 +7,11 @@
     android:layout_height="match_parent"
     tools:context=".TeachersDash">
 
-    <ListView
-        android:id="@+id/listView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="38dp"
-        android:layout_marginTop="67dp"
-        android:layout_marginEnd="38dp"
-        android:layout_marginBottom="62dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/btnAddClass" />
-
     <TextClock
         android:id="@+id/textClock2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@+id/listView"
+        app:layout_constraintStart_toStartOf="@+id/classList"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <TextView
@@ -44,7 +31,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginBottom="19dp"
         android:text="WELCOME, $TEACH"
-        app:layout_constraintBottom_toTopOf="@+id/listView"
+        app:layout_constraintBottom_toTopOf="@+id/classList"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
@@ -53,7 +40,20 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="55dp"
         android:text="ADD CLASS"
-        app:layout_constraintEnd_toEndOf="@+id/listView"
+        app:layout_constraintEnd_toEndOf="@+id/classList"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ListView
+        android:id="@+id/classList"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="38dp"
+        android:layout_marginTop="67dp"
+        android:layout_marginEnd="38dp"
+        android:layout_marginBottom="62dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btnAddClass" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

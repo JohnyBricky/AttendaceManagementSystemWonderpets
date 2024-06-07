@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,15 +12,10 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.core.view.WindowInsetsControllerCompat;
 
 public class ProfileTeacher extends AppCompatActivity {
 
-    private static final int REQUEST_GALLERY = 1;
-    private static final String TAG = "ProfileTeacher";
+    public static final int REQUEST_GALLERY = 1;
 
     private EditText txtWriteTeachName, txtWriteTeachNum;
     private Button btnSubmitTeachProfile, btnSelectImage;
@@ -79,10 +73,11 @@ public class ProfileTeacher extends AppCompatActivity {
             return;
         }
 
-        boolean isInserted = dbHelper.addTeacherProfile(teacherID, teacherName); // Using the method from DatabaseHelper
-
+        boolean isInserted = dbHelper.addTeacherProfile(teacherID, teacherName);
         if (isInserted) {
             Toast.makeText(this, "Profile Submitted Successfully", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(ProfileTeacher.this, TeacherLogin.class);
+            startActivity(intent);
         } else {
             Toast.makeText(this, "Failed to Submit Profile", Toast.LENGTH_SHORT).show();
         }

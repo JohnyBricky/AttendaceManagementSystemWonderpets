@@ -2,6 +2,7 @@ package com.example.attendacemanagementsystemwonderpets;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -57,26 +58,27 @@ public class SignUpActivity extends AppCompatActivity {
         }
 
         // Determine the table based on user type
-        String table = isStudent ? DatabaseHelper.TABLE_STUDENTS : DatabaseHelper.TABLE_TEACHERS;
+        String table = isStudent ? DatabaseHelper.TABLE_STUDENTS : DatabaseHelper.TABLE_TEACHER_PROFILES;
 
         // Insert user in database
         boolean insertSuccess = dbHelper.addUser(email, password, table);
         if (insertSuccess) {
             Toast.makeText(this, "Registration successful", Toast.LENGTH_SHORT).show();
+            Log.d("SignUpActivity", "User registered successfully");
 
-            // Navigate to Stud ProfileActivity if the student checkbox is checked
+            // Navigate to appropriate profile activity based on user type
             if (isStudent) {
                 Intent intent = new Intent(SignUpActivity.this, StudProfileActivity.class);
                 startActivity(intent);
-                finish( ); // Finish the current activity to remove it from the back stack
-            }
-            if (isTeacher) {
+                finish(); // Finish the current activity to remove it from the back stack
+            } else{
                 Intent intent = new Intent(SignUpActivity.this, ProfileTeacher.class);
                 startActivity(intent);
                 finish(); // Finish the current activity to remove it from the back stack
             }
         } else {
             Toast.makeText(this, "Registration failed", Toast.LENGTH_SHORT).show();
+            Log.e("SignUpActivity", "User registration failed");
         }
     }
 }

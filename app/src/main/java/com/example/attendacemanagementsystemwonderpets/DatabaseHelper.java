@@ -1,78 +1,115 @@
 package com.example.attendacemanagementsystemwonderpets;
 
 import android.content.ContentValues;
+
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    // Database Version
+    private static final String DATABASE_NAME = "AttendanceManagement.db";
     private static final int DATABASE_VERSION = 1;
 
-    // Database Name
-    private static final String DATABASE_NAME = "SchoolDatabase";
-
-    // Table Names
     public static final String TABLE_STUDENTS = "students";
-    public static final String TABLE_TEACHERS = "teachers";
-    public static final String TABLE_PROFILE = "student_profile"; // Added table name for student profile
+    public static final String TABLE_TEACHER_PROFILES = "teacher_profiles";
+    public static final String TABLE_CLASSES = "classes";
 
     // Common column names
-    public static final String COLUMN_ID = "_id";
+    public static final String COLUMN_ID = "id";
     public static final String COLUMN_EMAIL = "email";
     public static final String COLUMN_PASSWORD = "password";
 
-    // Student Profile column names
-    public static final String COLUMN_STUDENT_NUMBER = "student_number";
+    // Teacher profile specific column names
+    public static final String COLUMN_TEACHER_ID = "teacherID";
+    public static final String COLUMN_TEACHER_NAME = "teacherName";
+
+    // Student profile specific column names
+    public static final String COLUMN_STUDENT_NUMBER = "studentNumber";
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_SECTION = "section";
     public static final String COLUMN_GENDER = "gender";
 
-    // Table Create Statements
-    // Student table create statement
+    // Class specific column names
+    public static final String COLUMN_CLASS_CODE = "classCode";
+    public static final String COLUMN_CLASS_NAME = "className";
+    public static final String COLUMN_COURSE_TIME = "courseTime";
+
     private static final String CREATE_TABLE_STUDENTS = "CREATE TABLE "
             + TABLE_STUDENTS + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-            + COLUMN_EMAIL + " TEXT,"
-            + COLUMN_PASSWORD + " TEXT" + ")";
-
-    // Teacher table create statement
-    private static final String CREATE_TABLE_TEACHERS = "CREATE TABLE "
-            + TABLE_TEACHERS + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-            + COLUMN_EMAIL + " TEXT,"
-            + COLUMN_PASSWORD + " TEXT"
-            + COLUMN_ID + "TEXT"
-            + COLUMN_NAME + "TEXT"+")";
-
-    // Student Profile table create statement
-    private static final String CREATE_TABLE_PROFILE = "CREATE TABLE "
-            + TABLE_PROFILE + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + COLUMN_EMAIL + " TEXT UNIQUE,"
+            + COLUMN_PASSWORD + " TEXT,"
             + COLUMN_STUDENT_NUMBER + " TEXT,"
             + COLUMN_NAME + " TEXT,"
             + COLUMN_SECTION + " TEXT,"
             + COLUMN_GENDER + " TEXT" + ")";
 
+    private static final String CREATE_TABLE_TEACHER_PROFILES = "CREATE TABLE "
+            + TABLE_TEACHER_PROFILES + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + COLUMN_EMAIL + " TEXT UNIQUE,"
+            + COLUMN_PASSWORD + " TEXT,"
+            + COLUMN_TEACHER_ID + " TEXT,"
+            + COLUMN_TEACHER_NAME + " TEXT" + ")";
+
+    private static final String CREATE_TABLE_CLASSES = "CREATE TABLE "
+            + TABLE_CLASSES + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + COLUMN_CLASS_NAME + " TEXT,"
+            + COLUMN_COURSE_TIME + " TEXT,"
+            + COLUMN_CLASS_CODE + " TEXT UNIQUE" + ")";
+    private static String columnId;
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    public static String getColumnId() {
+        return COLUMN_ID;
+    }
+
+    public static String getColumnEmail() {
+        return COLUMN_EMAIL;
+    }
+
+    public static String getColumnPassword() {
+        return COLUMN_PASSWORD;
+    }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // creating required tables
         db.execSQL(CREATE_TABLE_STUDENTS);
-        db.execSQL(CREATE_TABLE_TEACHERS);
-        db.execSQL(CREATE_TABLE_PROFILE); // Create the profile table
+        db.execSQL(CREATE_TABLE_TEACHER_PROFILES);
+        db.execSQL(CREATE_TABLE_CLASSES);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // on upgrade drop older tables
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_STUDENTS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TEACHERS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PROFILE); // Drop the profile table
-        // create new tables
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TEACHER_PROFILES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CLASSES);
         onCreate(db);
+    }
+
+    public boolean addClass(String className, String courseTime, String classCode) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_CLASS_NAME, className);
+        values.put(COLUMN_COURSE_TIME, courseTime);
+        values.put(COLUMN_CLASS_CODE, classCode);
+
+        long result = -1;
+        try {
+            result = db.insertOrThrow(TABLE_CLASSES, null, values);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            db.close();
+        }
+        return result != -1;
     }
 
     public boolean addUser(String email, String password, String table) {
@@ -81,9 +118,52 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_EMAIL, email);
         values.put(COLUMN_PASSWORD, password);
 
-        long result = db.insert(table, null, values);
-        return result != -1; // return true if insert is successful
+        long result = -1;
+        try {
+            result = db.insertOrThrow(table, null, values);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            db.close();
+        }
+        return result != -1;
     }
+
+    public boolean addTeacherProfile(String teacherID, String teacherName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_TEACHER_ID, teacherID);
+        values.put(COLUMN_TEACHER_NAME, teacherName);
+
+        long result = -1;
+        try {
+            result = db.insertOrThrow(TABLE_TEACHER_PROFILES, null, values);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            db.close();
+        }
+        return result != -1;
+    }
+
+    public List<YourClassModel> getClasses() {
+        List<YourClassModel> classes = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_CLASSES, null, null, null, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                String className = cursor.getString(cursor.getColumnIndex(COLUMN_CLASS_NAME));
+                String courseTime = cursor.getString(cursor.getColumnIndex(COLUMN_COURSE_TIME));
+                String classCode = cursor.getString(cursor.getColumnIndex(COLUMN_CLASS_CODE));
+                YourClassModel yourClassModel = new YourClassModel(className, courseTime, classCode);
+                classes.add(yourClassModel);
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+        db.close();
+        return classes;
+    }
+
 
     public boolean addStudentProfile(String studentNumber, String name, String section, String gender) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -93,46 +173,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_SECTION, section);
         values.put(COLUMN_GENDER, gender);
 
-        long result = db.insert(TABLE_PROFILE, null, values);
-        return result != -1; // return true if insert is successful
-    }
-
-    public boolean addTeacherProfile(String teacherID, String name) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("TEACHER_ID", teacherID);
-        contentValues.put("NAME", name);
-
-        long result = db.insert("teacher_table", null, contentValues);
+        long result = -1;
+        try {
+            result = db.insertOrThrow(TABLE_STUDENTS, null, values);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            db.close();
+        }
         return result != -1;
     }
 
-    // Method to check student login
-    public boolean checkStudentLogin(String email, String password) {
+    public boolean checkUser(String email, String table) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_STUDENTS,
-                new String[]{COLUMN_ID},
-                COLUMN_EMAIL + "=? AND " + COLUMN_PASSWORD + "=?",
-                new String[]{email, password},
-                null, null, null);
-
-        boolean loginSuccess = cursor.moveToFirst();
+        Cursor cursor = db.query(table, null, COLUMN_EMAIL + "=?", new String[]{email}, null, null, null);
+        int count = cursor.getCount();
         cursor.close();
-        return loginSuccess;
+        db.close();
+        return count > 0;
     }
 
-    // Method to check teacher login
-    public boolean checkTeacherLogin(String email, String password) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_TEACHERS,
-                new String[]{COLUMN_ID},
-                COLUMN_EMAIL + "=? AND " + COLUMN_PASSWORD + "=?",
-                new String[]{email, password},
-                null, null, null);
-
-        boolean loginSuccess = cursor.moveToFirst();
-        cursor.close();
-        return loginSuccess;
-    }
 }
-

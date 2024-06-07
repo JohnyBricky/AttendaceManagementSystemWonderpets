@@ -12,9 +12,11 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -35,7 +37,6 @@ public class StudProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stud_profile);
-
         dbHelper = new DatabaseHelper(this);
         txtWriteStudNum = findViewById(R.id.txtWriteStudNum);
         txtWriteSection = findViewById(R.id.txtWriteSection);
@@ -91,22 +92,34 @@ public class StudProfileActivity extends AppCompatActivity {
     }
 
     private void openGallery() {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(intent, PICK_IMAGE_REQUEST);
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(galleryIntent, PICK_IMAGE_REQUEST);
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             imageView.setImageBitmap(imageBitmap);
+
         } else if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
             Uri selectedImage = data.getData();
             imageView2.setImageURI(selectedImage);
         }
     }
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if (requestCode == REQUEST_GALLERY && resultCode == RESULT_OK && data != null) {
+//            Uri imageUri = data.getData();
+//            imageProfileView.setImageURI(imageUri);
+//        }
+//    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -125,12 +138,10 @@ public class StudProfileActivity extends AppCompatActivity {
         String name = txtWriteStudName.getText().toString();
         String section = txtWriteSection.getText().toString();
         String gender = chkMale.isChecked() ? "Male" : chkFemale.isChecked() ? "Female" : "";
-
         if (studentNumber.isEmpty() || name.isEmpty() || section.isEmpty() || gender.isEmpty()) {
             Toast.makeText(this, "Please fill all fields and select gender", Toast.LENGTH_LONG).show();
             return;
         }
-
         boolean isInserted = dbHelper.addStudentProfile(studentNumber, name, section, gender);
         if (isInserted) {
             Toast.makeText(this, "Profile Submitted Successfully", Toast.LENGTH_SHORT).show();
@@ -138,4 +149,5 @@ public class StudProfileActivity extends AppCompatActivity {
             Toast.makeText(this, "Failed to Submit Profile", Toast.LENGTH_SHORT).show();
         }
     }
+
 }
